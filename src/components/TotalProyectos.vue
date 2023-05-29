@@ -24,6 +24,9 @@
           </tr>
         </tbody>
       </table>
+      <div class="progreso">
+        <button @click="limpiarTareas">Limpiar Tareas</button>
+      </div>
     </div>
 </template>
 
@@ -32,12 +35,9 @@ export default {
     props: {
         proyectos: Array,
         numeroProyectos: Number,
-        completado: Boolean
-    },
-    methods: {
-        cambiarEstado(proyecto, campo){
-      proyecto[campo] = !proyecto[campo]
-    }
+        completado: Boolean,
+        limpiarTareas: Function,
+        cambiarEstado: Function
     }
 }
 </script>

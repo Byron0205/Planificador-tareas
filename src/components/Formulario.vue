@@ -36,7 +36,12 @@
     </form>
     </div>
 
-    <total-proyectos :proyectos="proyectos" :numeroProyectos="numeroProyectos" :completado="completado"/>
+    <total-proyectos 
+      :proyectos="proyectos" 
+      :numeroProyectos="numeroProyectos" 
+      :completado="completado" 
+      :limpiarTareas="limpiarTareas"
+      :cambiarEstado="cambiarEstado"/>
   </div>
 </template>
 
@@ -60,11 +65,23 @@ export default {
         urgente: this.urgente,
         completado: this.completado
       }
-      this.proyectos.push(proyecto)
+      this.proyectos.push(proyecto);
+      this.guardarData()
       this.proyecto = ""
       this.tipo= ""
       this.urgente= false
     },
+    limpiarTareas(){
+      this.proyectos = []
+      localStorage.clear()
+    },
+    cambiarEstado(proyecto, campo){
+      proyecto[campo] = !proyecto[campo]
+      this.guardarData()
+    },
+    guardarData(){
+      localStorage.setItem('proyectos', JSON.stringify(this.proyectos))
+    }
   },
   computed: {
     numeroProyectos(){
@@ -76,13 +93,14 @@ export default {
         if(proyecto.completado){
           completados++;
         } 
-      })
-
+      },)
         return parseInt(completados * 100 / this.numeroProyectos) || 0
       //llamar una propiedad computada en otra
       //this.numeroProyectos // 100% de los proyectos
-      
     }
+  },
+  mounted(){
+    this.proyectos = JSON.parse(localStorage.getItem('proyectos')) || []
   }
   }
 </script>
